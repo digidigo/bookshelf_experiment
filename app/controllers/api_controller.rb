@@ -26,6 +26,14 @@ class ApiController < ApplicationController
     end
   end
   
+  def users_books
+    render :json => User.find(params[:id]).books.to_json
+  end
+  
+  def user_gets_a_new_book
+    render :json => User.find(params[:id]).books << Book.find(params[:book_id])
+  end
+  
   #book
   
   def book

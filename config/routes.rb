@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get ':controller/:action/(/:id)'
   post ':controller/:action'
 
+  get 'api/users/:id/bookshelf' , :controller => :api, :action => :users_books
+  post 'api/users/:id/bookshelf', :controller => :api, :action => :user_gets_a_new_book
+  delete 'api/users/:id/bookshelf/:book_id', :controller => :api , :action => :user_removes_a_book
+  
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
