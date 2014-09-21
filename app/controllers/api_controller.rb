@@ -34,6 +34,30 @@ class ApiController < ApplicationController
     render :json => User.find(params[:id]).books << Book.find(params[:book_id])
   end
   
+  def user_tags_a_book
+    user = User.find(params[:id])
+    book = Book.find(params[:book_id])
+    render :json => user.tag(book, :with => params[:tag], :on => "tags").to_json
+  end
+  
+  def user_tags_a_user
+     user = User.find(params[:id])
+     other_user = User.find(params[:user_id])
+     tags = other_user.owner_tags_on(user,"tags").map(&:name)
+     tags << params[:tag]
+     render :json => user.tag(other_user, :with => tags, :on => "tags").to_json
+   end
+   
+  def tags_for_user
+    user = User.find(params[:id])
+    render :json => user.tags.to_a.uniq.to_json
+  end
+  
+  def users_tagged_with
+    users = User.tagged_with(params[:tag]).uniq
+    render :json => users.to_json
+  end
+  
   #book
   
   def book
@@ -53,6 +77,18 @@ class ApiController < ApplicationController
      render :json => Book.all.to_json
     end
   end  
+  
+  def tags_for_book
+    book = Book.find(params[:id])
+    render :json =>   book.tags.to_a.uniq.to_json
+  end
+  
+  def books_tagged_with
+    books = Book.tagged_with(params[:tag]).uniq
+    render :json => books.to_json
+  end
+  
+
   
   private
   

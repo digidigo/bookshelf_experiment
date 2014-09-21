@@ -13,6 +13,16 @@ Rails.application.routes.draw do
   post 'api/users/:id/bookshelf', :controller => :api, :action => :user_gets_a_new_book
   delete 'api/users/:id/bookshelf/:book_id', :controller => :api , :action => :user_removes_a_book
   
+  post 'api/users/:id/books/:book_id/tags', :controller => :api, :action => :user_tags_a_book
+  post 'api/users/:id/users/:user_id/tags', :controller => :api, :action => :user_tags_a_user
+  
+  get 'api/users/:id/tags' , :controller => :api, :action => :tags_for_user
+  get 'api/books/:id/tags' , :controller => :api, :action => :tags_for_book
+  
+  get 'api/books/tagged_with/:tag' , :controller => :api, :action => :books_tagged_with
+  get 'api/users/tagged_with/:tag' , :controller => :api, :action => :users_tagged_with
+  
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
