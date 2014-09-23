@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140919073326) do
   end
 
   add_index "ownerships", ["book_id"], name: "index_ownerships_on_book_id"
+  add_index "ownerships", ["user_id", "book_id"], name: "index_ownerships_on_user_id_and_book_id", unique: true
   add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "taggings", force: true do |t|

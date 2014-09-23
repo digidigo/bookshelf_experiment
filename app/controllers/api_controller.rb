@@ -89,7 +89,6 @@ class ApiController < ApplicationController
   end
   
 
-  
   private
   
   def cant_process(error)

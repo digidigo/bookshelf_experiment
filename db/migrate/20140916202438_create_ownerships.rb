@@ -6,6 +6,8 @@ class CreateOwnerships < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index(:ownerships, [:user_id, :book_id], :unique => true)
   end
 
 end

@@ -9,12 +9,12 @@ Rails.application.routes.draw do
   get ':controller/:action/(/:id)'
   post ':controller/:action'
 
-  get 'api/users/:id/bookshelf' , :controller => :api, :action => :users_books
-  post 'api/users/:id/bookshelf', :controller => :api, :action => :user_gets_a_new_book
-  delete 'api/users/:id/bookshelf/:book_id', :controller => :api , :action => :user_removes_a_book
+  get 'api/users/:id/books' , :controller => :api, :action => :users_books
+  post 'api/users/:id/books', :controller => :api, :action => :user_gets_a_new_book
+  delete 'api/users/:id/books/:book_id', :controller => :api , :action => :user_removes_a_book
   
-  post 'api/users/:id/books/:book_id/tags', :controller => :api, :action => :user_tags_a_book
-  post 'api/users/:id/users/:user_id/tags', :controller => :api, :action => :user_tags_a_user
+  post 'api/users/:id/books/:book_id/tag', :controller => :api, :action => :user_tags_a_book
+  post 'api/users/:id/users/:user_id/tag', :controller => :api, :action => :user_tags_a_user
   
   get 'api/users/:id/tags' , :controller => :api, :action => :tags_for_user
   get 'api/books/:id/tags' , :controller => :api, :action => :tags_for_book
