@@ -1,3 +1,23 @@
+PATH
+  remote: engines/bookshelf
+  specs:
+    bookshelf (0.0.1)
+      library
+      people
+      rails (~> 4.1.2)
+
+PATH
+  remote: engines/library
+  specs:
+    library (0.0.1)
+      rails (~> 4.1.2)
+
+PATH
+  remote: engines/people
+  specs:
+    people (0.0.1)
+      rails (~> 4.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -119,10 +139,13 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  bookshelf!
   coffee-rails (~> 4.0.0)
   faraday
   jbuilder (~> 2.0)
   jquery-rails
+  library!
+  people!
   rails (= 4.1.2)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

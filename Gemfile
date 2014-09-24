@@ -28,6 +28,15 @@ gem 'spring',        group: :development
 
 gem 'acts-as-taggable-on'
 gem 'faraday'
+
+gemspec path: "engines/people"
+gemspec path: "engines/library"
+gemspec path: "engines/bookshelf"
+
+# gem 'people', path: "engines/people"
+# gem 'library', path: "engines/library"
+# gem 'bookshelf', path: "engines/bookshelf"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

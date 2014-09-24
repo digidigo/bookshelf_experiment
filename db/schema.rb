@@ -11,24 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919073326) do
+ActiveRecord::Schema.define(version: 20140924102336) do
 
-  create_table "books", force: true do |t|
+  create_table "bookshelf_ownerships", force: true do |t|
+    t.integer  "people_user_id",  null: false
+    t.integer  "library_book_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bookshelf_ownerships", ["library_book_id"], name: "index_bookshelf_ownerships_on_library_book_id"
+  add_index "bookshelf_ownerships", ["people_user_id", "library_book_id"], name: "udx_people_books", unique: true
+  add_index "bookshelf_ownerships", ["people_user_id"], name: "index_bookshelf_ownerships_on_people_user_id"
+
+  create_table "library_books", force: true do |t|
     t.string   "title",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "ownerships", force: true do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "book_id",    null: false
+  create_table "people_users", force: true do |t|
+    t.string   "username",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "ownerships", ["book_id"], name: "index_ownerships_on_book_id"
-  add_index "ownerships", ["user_id", "book_id"], name: "index_ownerships_on_user_id_and_book_id", unique: true
-  add_index "ownerships", ["user_id"], name: "index_ownerships_on_user_id"
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
@@ -49,11 +55,5 @@ ActiveRecord::Schema.define(version: 20140919073326) do
   end
 
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true
-
-  create_table "users", force: true do |t|
-    t.string   "username",   null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end

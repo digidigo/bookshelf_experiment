@@ -9,11 +9,11 @@ class ApiController < ApplicationController
   #user
   
   def user
-    render :json => User.find(params[:id]).to_json
+    render :json => People::User.find(params[:id]).to_json
   end
   
   def new_user
-    render :json => User.create(:username => params[:username])
+    render :json => People::User.create(:username => params[:username])
   end
   
   def users
@@ -22,50 +22,54 @@ class ApiController < ApplicationController
     elsif( request.post? )
       new_user
     else
-     render :json => User.all.to_json
+     render :json => People::User.all.to_json
     end
   end
   
   def users_books
-    render :json => User.find(params[:id]).books.to_json
+    render :json => Bookshelf::Ownership.where(:people_user_id => params[:id]).map(&:library_book).to_json
   end
   
   def user_gets_a_new_book
-    render :json => User.find(params[:id]).books << Book.find(params[:book_id])
+    user = People::User.find(params[:id])
+    book = Library::Book.find(params[:book_id])
+    
+    ownership = Bookshelf::Ownership.create(:people_user => user, :library_book => book)
+    render :json => ownership.to_json
   end
   
   def user_tags_a_book
-    user = User.find(params[:id])
-    book = Book.find(params[:book_id])
+    user = People::User.find(params[:id])
+    book = Library::Book.find(params[:book_id])
     render :json => user.tag(book, :with => params[:tag], :on => "tags").to_json
   end
   
   def user_tags_a_user
-     user = User.find(params[:id])
-     other_user = User.find(params[:user_id])
+     user = People::User.find(params[:id])
+     other_user = People::User.find(params[:user_id])
      tags = other_user.owner_tags_on(user,"tags").map(&:name)
      tags << params[:tag]
      render :json => user.tag(other_user, :with => tags, :on => "tags").to_json
    end
    
   def tags_for_user
-    user = User.find(params[:id])
+    user = People::User.find(params[:id])
     render :json => user.tags.to_a.uniq.to_json
   end
   
   def users_tagged_with
-    users = User.tagged_with(params[:tag]).uniq
+    users = People::User.tagged_with(params[:tag]).uniq
     render :json => users.to_json
   end
   
   #book
   
   def book
-    render :json => Book.find(params[:id]).to_json
+    render :json => Library::Book.find(params[:id]).to_json
   end
   
   def new_book
-    render :json => Book.create(:title => params[:title])
+    render :json => Library::Book.create(:title => params[:title])
   end
   
   def books
@@ -74,17 +78,17 @@ class ApiController < ApplicationController
     elsif( request.post? )
       new_book
     else
-     render :json => Book.all.to_json
+     render :json => Library::Book.all.to_json
     end
   end  
   
   def tags_for_book
-    book = Book.find(params[:id])
+    book = Library::Book.find(params[:id])
     render :json =>   book.tags.to_a.uniq.to_json
   end
   
   def books_tagged_with
-    books = Book.tagged_with(params[:tag]).uniq
+    books = Library::Book.tagged_with(params[:tag]).uniq
     render :json => books.to_json
   end
   
