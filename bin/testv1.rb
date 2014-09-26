@@ -6,7 +6,7 @@ require 'open-uri'
 
 class String
   def pretty
-    JSON.parse(self).to_yaml
+    JSON.parse(self).to_yaml rescue "FAILED"
   end  
 end
 

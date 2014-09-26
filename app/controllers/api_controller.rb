@@ -41,24 +41,31 @@ class ApiController < ApplicationController
   def user_tags_a_book
     user = People::User.find(params[:id])
     book = Library::Book.find(params[:book_id])
-    render :json => user.tag(book, :with => params[:tag], :on => "tags").to_json
+    
+    tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first_or_create
+    tagging = ActsAsTaggableOn::Tagging.create(:tagger => user, :taggable => book, :tag => tag , :context => "tags")
+    render :json => tagging.to_json
   end
   
   def user_tags_a_user
      user = People::User.find(params[:id])
-     other_user = People::User.find(params[:user_id])
-     tags = other_user.owner_tags_on(user,"tags").map(&:name)
-     tags << params[:tag]
-     render :json => user.tag(other_user, :with => tags, :on => "tags").to_json
+     other_user = People::User.find(params[:user_id]) 
+       
+     tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first_or_create
+     tagging = ActsAsTaggableOn::Tagging.create(:tagger => user, :taggable => other_user, :tag => tag , :context => "tags")
+     render :json => tagging.to_json
    end
    
   def tags_for_user
     user = People::User.find(params[:id])
-    render :json => user.tags.to_a.uniq.to_json
+    taggings = ActsAsTaggableOn::Tagging.where(:taggable => user)
+    render :json => taggings.map(&:tag).to_a.uniq.to_json
   end
   
   def users_tagged_with
-    users = People::User.tagged_with(params[:tag]).uniq
+    tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first
+    taggings = ActsAsTaggableOn::Tagging.where(:taggable_type => People::User, :tag => tag).all
+    users = People::User.find(taggings.map(&:taggable_id))
     render :json => users.to_json
   end
   
@@ -84,11 +91,14 @@ class ApiController < ApplicationController
   
   def tags_for_book
     book = Library::Book.find(params[:id])
-    render :json =>   book.tags.to_a.uniq.to_json
+    taggings = ActsAsTaggableOn::Tagging.where(:taggable => book).all
+    render :json => taggings.map(&:tag).to_a.uniq.to_json
   end
   
   def books_tagged_with
-    books = Library::Book.tagged_with(params[:tag]).uniq
+    tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first
+    taggings = ActsAsTaggableOn::Tagging.where(:taggable_type => Library::Book, :tag => tag).all
+    books = Library::Book.find(taggings.map(&:taggable_id))
     render :json => books.to_json
   end
   
