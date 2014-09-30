@@ -7,7 +7,6 @@ class ApiController < ApplicationController
   end
   
   #user
-  
   def user
     render :json => People::User.find(params[:id]).to_json
   end
@@ -33,7 +32,7 @@ class ApiController < ApplicationController
   def user_gets_a_new_book
     user = People::User.find(params[:id])
     book = Library::Book.find(params[:book_id])
-    
+    # could use id's here actually. 
     ownership = Bookshelf::Ownership.create(:people_user => user, :library_book => book)
     render :json => ownership.to_json
   end
@@ -42,6 +41,7 @@ class ApiController < ApplicationController
     user = People::User.find(params[:id])
     book = Library::Book.find(params[:book_id])
     
+    # notice we are using the gem model's directly. 
     tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first_or_create
     tagging = ActsAsTaggableOn::Tagging.create(:tagger => user, :taggable => book, :tag => tag , :context => "tags")
     render :json => tagging.to_json
@@ -63,7 +63,9 @@ class ApiController < ApplicationController
   end
   
   def users_tagged_with
+    # still lot's of SQL'ish stuff here.   Maybe that is okay.  
     tag = ActsAsTaggableOn::Tag.where(:name => params[:tag]).first
+    
     taggings = ActsAsTaggableOn::Tagging.where(:taggable_type => People::User, :tag => tag).all
     users = People::User.find(taggings.map(&:taggable_id))
     render :json => users.to_json
