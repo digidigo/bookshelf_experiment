@@ -27,6 +27,7 @@ class ApiController < ApplicationController
   end
   
   def users_books
+    # probably should return ids for what we are looking for.
     ownerships = Bookshelf::Engine.get_ownerships(:people_user_id => params[:id])
     render :json => Library::Engine.get_books(ownerships.map(&:library_book_id)).to_json
   end
