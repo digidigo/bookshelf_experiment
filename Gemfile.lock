@@ -18,6 +18,13 @@ PATH
     people (0.0.1)
       rails (~> 4.1.2)
 
+PATH
+  remote: engines/tagit
+  specs:
+    tagit (0.0.1)
+      acts-as-taggable-on
+      rails (~> 4.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -138,7 +145,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts-as-taggable-on
   bookshelf!
   coffee-rails (~> 4.0.0)
   faraday
@@ -151,5 +157,6 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   spring
   sqlite3
+  tagit!
   turbolinks
   uglifier (>= 1.3.0)

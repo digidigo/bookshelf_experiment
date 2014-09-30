@@ -26,12 +26,12 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
-gem 'acts-as-taggable-on'
 gem 'faraday'
 
 gemspec path: "engines/people"
 gemspec path: "engines/library"
 gemspec path: "engines/bookshelf"
+gemspec path: "engines/tagit"
 
 # gem 'people', path: "engines/people"
 # gem 'library', path: "engines/library"
